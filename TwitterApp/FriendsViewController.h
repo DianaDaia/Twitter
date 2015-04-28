@@ -11,5 +11,6 @@
 @interface FriendsViewController : UIViewController
 
 @property(nonatomic, retain) NSString *friendsType;
+@property(nonatomic, retain) NSString *userId;
 
 @end

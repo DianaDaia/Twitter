@@ -66,6 +66,9 @@
     username.layer.borderColor = [UIColor whiteColor].CGColor;
     username.layer.borderWidth = 1.0f;
     username.layer.cornerRadius = 5;
+    UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 5, 20)];
+    username.leftView = paddingView;
+    username.leftViewMode = UITextFieldViewModeAlways;
     username.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:username];
     
@@ -78,6 +81,9 @@
     email.layer.borderColor = [UIColor whiteColor].CGColor;
     email.layer.borderWidth = 1.0f;
     email.layer.cornerRadius = 5;
+    UIView *paddingView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 5, 20)];
+    email.leftView = paddingView1;
+    email.leftViewMode = UITextFieldViewModeAlways;
     email.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:email];
     
@@ -91,6 +97,9 @@
     password.layer.borderColor = [UIColor whiteColor].CGColor;
     password.layer.borderWidth = 1.0f;
     password.layer.cornerRadius = 5;
+    UIView *paddingView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 5, 20)];
+    password.leftView = paddingView2;
+    password.leftViewMode = UITextFieldViewModeAlways;
     password.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:password];
     
@@ -124,6 +133,19 @@
 
 - (void)onSignUpPressed
 {
+    NSCharacterSet *set = [NSCharacterSet whitespaceCharacterSet];
+    if ([[email.text stringByTrimmingCharactersInSet: set] length] == 0 || [[password.text stringByTrimmingCharactersInSet: set] length] == 0 || [[username.text stringByTrimmingCharactersInSet: set] length] == 0)
+    {
+        [[[UIAlertView alloc] initWithTitle:@"Sign Up"
+                                    message:@"You must fill in all the fields."
+                                   delegate:self
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil] show];
+        
+        return;
+
+    }
+    
     
     if ([email.text isEqualToString:@""] || [password.text isEqualToString:@""] || [username.text isEqualToString:@""])
     {

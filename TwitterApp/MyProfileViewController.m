@@ -2,7 +2,7 @@
 //  MyProfileViewController.m
 //  Twitter
 //
-//  Created by Diana Stefania Daia on 21/03/15.
+//  Created by Lucian Tarna on 21/03/15.
 //  Copyright (c) 2015 Diana Stefania Daia. All rights reserved.
 //
 
@@ -17,6 +17,7 @@
 #import "LoginViewController.h"
 #import "EditProfileViewController.h"
 #import "FriendsViewController.h"
+#import "TweetDetailsViewController.h"
 
 #define APP ((AppDelegate*)[[UIApplication sharedApplication] delegate])
 
@@ -86,7 +87,7 @@
 //    [self getFollowers];
 //    [self getFollowing];
     [self getTweets];
-    
+    profileImage.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[[DatabaseHandler sharedInstance] getGravatarURL:[[NSUserDefaults standardUserDefaults] valueForKey:@"loggedIn"]]]];
 }
 
 - (void)getFollowers
@@ -158,7 +159,8 @@
 
 - (void)setupLayout
 {
-    self.view.backgroundColor = [UIColor whiteColor];
+    //self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [Utils colorFromHex:@"#8471BA"];
     
     contentOffsetDictionary = [[NSMutableDictionary alloc] init];
     
@@ -185,7 +187,7 @@
     [topView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[leftView(==150)][rightView]|" options:0 metrics:nil views:topDict]];
     
     profileImage = [[UIImageView alloc] init];
-    profileImage.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[[DatabaseHandler sharedInstance] getGravatarURL:[[NSUserDefaults standardUserDefaults] valueForKey:@"loggedIn"]]]];
+//    profileImage.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[[DatabaseHandler sharedInstance] getGravatarURL:[[NSUserDefaults standardUserDefaults] valueForKey:@"loggedIn"]]]];
     profileImage.contentMode = UIViewContentModeScaleAspectFit;
     profileImage.translatesAutoresizingMaskIntoConstraints = NO;
     [leftView addSubview:profileImage];
@@ -338,6 +340,7 @@
 {
     FriendsViewController *friendsView = [FriendsViewController new];
     [friendsView setFriendsType:@"Following"];
+    [friendsView setUserId:[[NSUserDefaults standardUserDefaults] valueForKey:@"id"]];
     [self.navigationController pushViewController:friendsView animated:YES];
 
 }
@@ -346,6 +349,7 @@
 {
     FriendsViewController *friendsView = [FriendsViewController new];
     [friendsView setFriendsType:@"Followers"];
+    [friendsView setUserId:[[NSUserDefaults standardUserDefaults] valueForKey:@"id"]];
     [self.navigationController pushViewController:friendsView animated:YES];
 }
 
@@ -375,6 +379,7 @@
     if (cell == nil)
     {
         cell = [[TweetsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     cell.authorName.text = [[NSUserDefaults standardUserDefaults] valueForKey:@"username"];
@@ -387,7 +392,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    TweetDetailsViewController *seeTweet = [[TweetDetailsViewController alloc] init];
+    [seeTweet setTweetId:[[tweetsArray objectAtIndex:indexPath.row] objectId]];
+    [self presentViewController:seeTweet animated:YES completion:nil];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -400,14 +407,14 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSArray *numberOfImages = [[tweetsArray objectAtIndex:indexPath.row] valueForKey:@"images"];
+//    NSArray *numberOfImages = [[tweetsArray objectAtIndex:indexPath.row] valueForKey:@"images"];
+//    
+//    if (numberOfImages.count == 0)
+//    {
+//        return 90;
+//    }
     
-    if (numberOfImages.count == 0)
-    {
-        return 60;
-    }
-    
-    return 130;
+    return 150;
 }
 
 

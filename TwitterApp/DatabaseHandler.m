@@ -9,6 +9,7 @@
 #import "DatabaseHandler.h"
 #import <Parse/Parse.h>
 #import <CommonCrypto/CommonDigest.h>
+#import "TweetDetailsViewController.h"
 
 @implementation DatabaseHandler
 
@@ -597,9 +598,7 @@
     [query findObjectsInBackgroundWithBlock:^(NSArray *followers, NSError *error)
      {
          
-         NSLog(@"%@", followers);
-         
-         
+         //NSLog(@"%@", followers);
          
          if (!error)
          {
@@ -623,5 +622,123 @@
 
 }
 
+- (void)getTweetWithId:(NSString*)tweetId
+{
+    
+    PFQuery *query = [PFQuery queryWithClassName:@"Tweet"];
+    [query whereKey:@"objectId" equalTo:tweetId];
+    
+    NSMutableDictionary *info = [[NSMutableDictionary alloc] init];
+    
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error)
+        {
+            [info setValue:[objects objectAtIndex:0] forKey:@"tweet"];
+            
+            
+            PFObject *user = [[objects objectAtIndex:0] objectForKey:@"parent"];
+            
+            [user fetchIfNeededInBackgroundWithBlock:^(PFObject *user, NSError *error1) {
+                
+                if (!error1)
+                {
+                    
+                    [info setValue:user forKey:@"user"];
+                    
+                    
+                    if (self.completionHandlerForTweet)
+                    {
+                        self.completionHandlerForTweet(info);
+                    }
+                    
+                    self.completionHandlerForTweet = nil;
+                    
+                    
+                }
+                else
+                {
+                    if (self.completionHandlerForTweet)
+                    {
+                        self.completionHandlerForTweet(nil);
+                    }
+                    
+                    self.completionHandlerForTweet = nil;
+                }
+
+                
+            }];
+        }
+        else
+        {
+            if (self.completionHandlerForTweet)
+            {
+                self.completionHandlerForTweet(nil);
+            }
+            
+            self.completionHandlerForTweet = nil;
+        }
+    }];
+
+}
+
+
+- (void)getTweets
+{
+    PFQuery *queryT = [PFQuery queryWithClassName:@"Tweet"];
+    [queryT addDescendingOrder:@"createdAt"];
+    
+    [queryT findObjectsInBackgroundWithBlock:^(NSArray *tweets, NSError *error)
+     {
+         if (!error)
+         {
+             if (self.completionHandlerForTweets)
+             {
+                 self.completionHandlerForTweets(tweets);
+             }
+             
+             self.completionHandlerForTweets = nil;
+             
+         }
+         else
+         {
+             if (self.completionHandlerForTweets)
+             {
+                 self.completionHandlerForTweets(nil);
+             }
+             
+             self.completionHandlerForTweets = nil;
+         }
+     }];
+
+}
+
+- (void)getUsers
+{
+    PFQuery *queryT = [PFQuery queryWithClassName:@"User"];
+    
+    [queryT findObjectsInBackgroundWithBlock:^(NSArray *users, NSError *error)
+     {
+         if (!error)
+         {
+             if (self.completionHandlerForUsers)
+             {
+                 self.completionHandlerForUsers(users);
+             }
+             
+             self.completionHandlerForUsers = nil;
+             
+         }
+         else
+         {
+             if (self.completionHandlerForUsers)
+             {
+                 self.completionHandlerForUsers(nil);
+             }
+             
+             self.completionHandlerForUsers = nil;
+         }
+     }];
+
+}
 
 @end

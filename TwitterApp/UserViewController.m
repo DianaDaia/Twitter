@@ -11,6 +11,8 @@
 #import "Utils.h"
 #import "TweetsCell.h"
 #import "MBProgressHUD.h"
+#import "FriendsViewController.h"
+#import "TweetDetailsViewController.h"
 
 @interface UserViewController () <UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 {
@@ -73,6 +75,13 @@
     
 }
 
+//- (void)viewDidDisappear:(BOOL)animated
+//{
+//    [super viewDidDisappear:YES];
+//    
+//    [self.navigationController popViewControllerAnimated:YES];
+//}
+
 - (void)getFollowers
 {
     [[DatabaseHandler sharedInstance] getFollowers:self.userProfile.objectId];
@@ -125,7 +134,7 @@
 
 - (void)setupLayout
 {
-    
+    self.view.backgroundColor = [Utils colorFromHex:@"#8471BA"];
     
     contentOffsetDictionary = [[NSMutableDictionary alloc] init];
     
@@ -149,7 +158,7 @@
     
     [topView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[leftView]|" options:0 metrics:nil views:topDict]];
     [topView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[rightView]|" options:0 metrics:nil views:topDict]];
-    [topView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[leftView(==150)][rightView]|" options:0 metrics:nil views:topDict]];
+    [topView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[leftView(==180)][rightView]|" options:0 metrics:nil views:topDict]];
     
     back = [[UIButton alloc] init];
     [back setBackgroundImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
@@ -177,7 +186,7 @@
     NSDictionary *leftDict = NSDictionaryOfVariableBindings(back, profileImage, username);
     
     [leftView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-30-[back(==20)]-|" options:0 metrics:nil views:leftDict]];
-    [leftView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-30-[profileImage]-[username(==40)]-|" options:0 metrics:nil views:leftDict]];
+    [leftView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-30-[profileImage]-[username]-|" options:0 metrics:nil views:leftDict]];
     [leftView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[back(==20)]-[profileImage]-|" options:0 metrics:nil views:leftDict]];
     [leftView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[back(==20)]-[username]-|" options:0 metrics:nil views:leftDict]];
     
@@ -206,6 +215,11 @@
     [rightView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[follow]-|" options:0 metrics:nil views:rightDict]];
     [rightView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[followingView]-|" options:0 metrics:nil views:rightDict]];
     [rightView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[followersView(==followingView)]-|" options:0 metrics:nil views:rightDict]];
+    
+//    if ([[self.userProfile objectId] isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"id"]])
+//    {
+//        follow.hidden = true;
+//    }
     
     seeFollowing = [[UIButton alloc] init];
     [seeFollowing setBackgroundColor:[UIColor clearColor]];
@@ -317,12 +331,19 @@
 
 - (void)onSeeFollowingPressed
 {
+    FriendsViewController *friendsView = [FriendsViewController new];
+    [friendsView setFriendsType:@"Following"];
+    [friendsView setUserId:self.userProfile.objectId];
+    [self.navigationController pushViewController:friendsView animated:YES];
     
 }
 
 - (void)onSeeFollowersPressed
 {
-    
+    FriendsViewController *friendsView = [FriendsViewController new];
+    [friendsView setFriendsType:@"Followers"];
+    [friendsView setUserId:self.userProfile.objectId];
+    [self.navigationController pushViewController:friendsView animated:YES];
 }
 
 - (void)onBackPressed
@@ -354,6 +375,7 @@
     if (cell == nil)
     {
         cell = [[TweetsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     cell.authorName.text = [self.userProfile valueForKey:@"username"];
@@ -366,7 +388,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    TweetDetailsViewController *seeTweet = [[TweetDetailsViewController alloc] init];
+    [seeTweet setTweetId:[[self.userTweets objectAtIndex:indexPath.row] objectId]];
+    [self presentViewController:seeTweet animated:YES completion:nil];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -379,14 +403,14 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSArray *numberOfImages = [[self.userTweets objectAtIndex:indexPath.row] valueForKey:@"images"];
+//    NSArray *numberOfImages = [[self.userTweets objectAtIndex:indexPath.row] valueForKey:@"images"];
+//    
+//    if (numberOfImages.count == 0)
+//    {
+//        return 90;
+//    }
     
-    if (numberOfImages.count == 0)
-    {
-        return 60;
-    }
-    
-    return 130;
+    return 150;
 }
 
 
@@ -407,6 +431,7 @@
     [header addSubview:title];
     
     return header;
+
 }
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(TweetsCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath

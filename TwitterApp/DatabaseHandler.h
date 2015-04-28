@@ -14,10 +14,12 @@
 
 @property (nonatomic, copy) void (^completionHandler)(BOOL response);
 @property (nonatomic, copy) void (^completionHandlerForTweets)(NSArray *tweets);
+@property (nonatomic, copy) void (^completionHandlerForUsers)(NSArray *users);
 @property (nonatomic, copy) void (^completionHandlerForFollowers)(NSArray *followers);
 @property (nonatomic, copy) void (^completionHandlerForFollowing)(NSArray *following);
 @property (nonatomic, copy) void (^completionResponseHandler)(NSString* response);
 @property (nonatomic, copy) void (^completionResponseHandlerUserInfo)(NSDictionary* response);
+@property (nonatomic, copy) void (^completionHandlerForTweet)(NSDictionary *response);
 
 - (void)checkUniqueMail:(NSString*)mail;
 - (void)saveUser:(NSDictionary*)userInfo;
@@ -35,5 +37,8 @@
 - (void)getFollowers:(NSString*)userId;
 - (void)getFollowing:(NSString*)userId;
 - (void)getFollowersForUsers:(NSMutableArray*)users;
+- (void)getTweetWithId:(NSString*)tweetId;
+- (void)getTweets;
+- (void)getUsers;
 
 @end

@@ -2,7 +2,7 @@
 //  ViewController.m
 //  TwitterApp
 //
-//  Created by Diana Stefania Daia on 18/04/15.
+//  Created by Lucian Tarna on 18/04/15.
 //  Copyright (c) 2015 Diana Stefania Daia. All rights reserved.
 //
 
@@ -12,6 +12,7 @@
 #import "MBProgressHUD.h"
 #import <Parse/Parse.h>
 #import "Utils.h"
+#import "TweetDetailsViewController.h"
 
 @interface ViewController () <UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 {
@@ -84,7 +85,7 @@
 {
     self.view.backgroundColor = [Utils colorFromHex:@"#8471BA"];
     
-    tweetsList = [[UITableView alloc] initWithFrame:CGRectMake(0, 30, self.view.frame.size.width, self.view.frame.size.height - 30) style:UITableViewStylePlain];
+    tweetsList = [[UITableView alloc] initWithFrame:CGRectMake(0, 30, self.view.frame.size.width, self.view.frame.size.height - 30 - self.tabBarController.tabBar.frame.size.height) style:UITableViewStylePlain];
     tweetsList.backgroundColor = [UIColor whiteColor];
     tweetsList.delegate = self;
     tweetsList.dataSource = self;
@@ -118,6 +119,7 @@
     if (cell == nil)
     {
         cell = [[TweetsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     cell.authorName.text = [[tweetsArray objectAtIndex:indexPath.row] valueForKey:@"parentName"];
@@ -130,7 +132,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    TweetDetailsViewController *seeTweet = [[TweetDetailsViewController alloc] init];
+    [seeTweet setTweetId:[[tweetsArray objectAtIndex:indexPath.row] objectId]];
+    [self presentViewController:seeTweet animated:YES completion:nil];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -143,14 +147,14 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSArray *numberOfImages = [[tweetsArray objectAtIndex:indexPath.row] valueForKey:@"images"];
+//    NSArray *numberOfImages = [[tweetsArray objectAtIndex:indexPath.row] valueForKey:@"images"];
+//    
+//    if (numberOfImages.count == 0)
+//    {
+//        return 90;
+//    }
     
-    if (numberOfImages.count == 0)
-    {
-        return 60;
-    }
-    
-    return 130;
+    return 150;
 }
 
 

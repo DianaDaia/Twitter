@@ -2,7 +2,7 @@
 //  EditProfileViewController.m
 //  Twitter
 //
-//  Created by Diana Stefania Daia on 25/03/15.
+//  Created by Lucian Tarna on 25/03/15.
 //  Copyright (c) 2015 Diana Stefania Daia. All rights reserved.
 //
 
@@ -202,7 +202,9 @@
 
 - (void)onSavePressed
 {
-    if ([usernameTxt.text isEqualToString:@""] || [password.text isEqualToString:@""])
+    NSCharacterSet *set = [NSCharacterSet whitespaceCharacterSet];
+    
+    if ([usernameTxt.text isEqualToString:@""] || [password.text isEqualToString:@""] || [[usernameTxt.text stringByTrimmingCharactersInSet: set] length] == 0 || [[password.text stringByTrimmingCharactersInSet: set] length] == 0)
     {
         [[[UIAlertView alloc] initWithTitle:@"Edit"
                                     message:@"You must fill in all the fields."

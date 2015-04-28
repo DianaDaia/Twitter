@@ -15,6 +15,7 @@
 #import "SearchViewController.h"
 #import "FollowViewController.h"
 #import "LoginViewController.h"
+#import "Utils.h"
 
 @interface AppDelegate ()
 
@@ -42,9 +43,11 @@
     
     UINavigationController *userProfileNavController = [[UINavigationController alloc] initWithRootViewController:follow];
     UINavigationController *myProfileNavController = [[UINavigationController alloc] initWithRootViewController:myProfile];
+    UINavigationController *searchNavController = [[UINavigationController alloc] initWithRootViewController:search];
     
-    NSArray* controllers = [NSArray arrayWithObjects:timeline, myProfileNavController, search, userProfileNavController, nil];
+    NSArray* controllers = [NSArray arrayWithObjects:timeline, myProfileNavController, searchNavController, userProfileNavController, nil];
     self.tabBarController.viewControllers = controllers;
+    self.tabBarController.tabBar.tintColor = [Utils colorFromHex:@"#8471BA"];
     
     [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"AmericanTypewriter" size:20.0f], UITextAttributeFont, nil] forState:UIControlStateNormal];
     
@@ -57,6 +60,7 @@
     [[self.tabBarController.tabBar.items objectAtIndex:2] setTitle:@"Search"];
     
     [[self.tabBarController.tabBar.items objectAtIndex:3] setTitle:@"Follow"];
+    
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"LoggedIn"])
     {

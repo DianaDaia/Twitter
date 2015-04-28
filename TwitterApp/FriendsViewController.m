@@ -16,6 +16,9 @@
 
 @interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate, UserUpdate>
 {
+    UIView *navBar;
+    UIButton *back;
+    
     UITableView *usersList;
     
     NSArray *usersIDs;
@@ -48,7 +51,7 @@
     [super viewWillAppear:YES];
     
     self.view.backgroundColor = [Utils colorFromHex:@"#8471BA"];
-    self.navigationController.navigationBarHidden = false;
+    self.navigationController.navigationBarHidden = true;
     
 }
 
@@ -65,18 +68,22 @@
 
 - (void)getData
 {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
     if ([self.friendsType isEqualToString:@"Followers"])
     {
-        [[DatabaseHandler sharedInstance] getFollowers:[[NSUserDefaults standardUserDefaults] valueForKey:@"id"]];
+        [[DatabaseHandler sharedInstance] getFollowers:self.userId];
         
         [[DatabaseHandler sharedInstance] setCompletionHandlerForFollowers:^(NSArray *followersArray) {
+            
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
             
             if (followersArray != nil)
             {
                 usersIDs = [[NSArray alloc] init];
                 usersIDs = followersArray;
                 
-                NSLog(@"%@", usersIDs);
+                //NSLog(@"%@", usersIDs);
                 
                 
                 [self getUsers];
@@ -95,16 +102,18 @@
     }
     else
     {
-        [[DatabaseHandler sharedInstance] getFollowing:[[NSUserDefaults standardUserDefaults] valueForKey:@"id"]];
+        [[DatabaseHandler sharedInstance] getFollowing:self.userId];
         
         [[DatabaseHandler sharedInstance] setCompletionHandlerForFollowing:^(NSArray *followingArray) {
+            
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
             
             if (followingArray != nil)
             {
                 usersIDs = [[NSArray alloc] init];
                 usersIDs = followingArray;
                 
-                NSLog(@"%@", usersIDs);
+                //NSLog(@"%@", usersIDs);
                 
                 
                 [self getUsers];
@@ -140,7 +149,7 @@
         
     }
     
-    NSLog(@"%@", usersID);
+    //NSLog(@"%@", usersID);
     
     
     [[DatabaseHandler sharedInstance] getUsersWithIDs:usersID];
@@ -152,7 +161,7 @@
             usersArray = [[NSArray alloc] init];
             usersArray = usersProfile;
             
-            NSLog(@"%@", usersArray);
+            //NSLog(@"%@", usersArray);
             
             
             [self getFollowersForEveryUser];
@@ -195,9 +204,7 @@
             followers = [[NSArray alloc] init];
             followers = followersArray;
             
-            NSLog(@"%@", followers);
-            
-            
+            //NSLog(@"%@", followers);
             
             [usersList reloadData];
             
@@ -216,8 +223,21 @@
 
 - (void)setupLayout
 {
+    self.view.backgroundColor = [Utils colorFromHex:@"#8471BA"];
     
-    usersList = [[UITableView alloc] initWithFrame:CGRectMake(0, 30, self.view.frame.size.width, self.view.frame.size.height - 30) style:UITableViewStylePlain];
+    navBar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 64)];
+    navBar.backgroundColor = [Utils colorFromHex:@"#8471BA"];
+    [self.view addSubview:navBar];
+    
+    back = [[UIButton alloc] initWithFrame:CGRectMake(20, 40, 20, 20)];
+    [back setBackgroundImage:[UIImage imageNamed:@"back"] forState:UIControlStateNormal];
+    [back setContentMode:UIViewContentModeScaleAspectFit];
+    [back addTarget:self action:@selector(onBackPressed) forControlEvents:UIControlEventTouchUpInside];
+    back.translatesAutoresizingMaskIntoConstraints = NO;
+    [navBar addSubview:back];
+
+    
+    usersList = [[UITableView alloc] initWithFrame:CGRectMake(0, 70, self.view.frame.size.width, self.view.frame.size.height - 30) style:UITableViewStylePlain];
     usersList.backgroundColor = [UIColor whiteColor];
     usersList.delegate = self;
     usersList.dataSource = self;
@@ -242,6 +262,11 @@
     
     
     return followersNo;
+}
+
+- (void)onBackPressed
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - UITableViewDataSource
@@ -269,6 +294,7 @@
     if (cell == nil)
     {
         cell = [[UserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     cell.username.text = [[usersArray objectAtIndex:indexPath.row] valueForKey:@"username"];

@@ -21,6 +21,8 @@
     NSArray *usersArray;
     NSMutableArray *nrOfFollowersForEveryUser;
     NSArray *followers;
+    
+    BOOL updateDone;
 }
 
 @end
@@ -32,7 +34,9 @@
     [super viewDidLoad];
     
     [self setupLayout];
-    [self getData];
+    
+    updateDone = false;
+    //[self getData];
     
     // Do any additional setup after loading the view.
 }
@@ -54,10 +58,18 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:YES];
+    
+    if (!updateDone)
+    {
+        [self getData];
+    }
+    
+    updateDone = false;
 }
 
 - (void)updateData
 {
+    updateDone = true;
     [self getData];
 }
 
@@ -126,6 +138,7 @@
 
 - (void)setupLayout
 {
+    self.view.backgroundColor = [Utils colorFromHex:@"#8471BA"];
     
     usersList = [[UITableView alloc] initWithFrame:CGRectMake(0, 30, self.view.frame.size.width, self.view.frame.size.height - 30) style:UITableViewStylePlain];
     usersList.backgroundColor = [UIColor whiteColor];
@@ -180,6 +193,7 @@
     if (cell == nil)
     {
         cell = [[UserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     cell.username.text = [[usersArray objectAtIndex:indexPath.row] valueForKey:@"username"];

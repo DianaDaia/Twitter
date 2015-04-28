@@ -65,6 +65,9 @@
     email.layer.borderColor = [UIColor whiteColor].CGColor;
     email.layer.borderWidth = 1.0f;
     email.layer.cornerRadius = 5;
+    UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 5, 20)];
+    email.leftView = paddingView;
+    email.leftViewMode = UITextFieldViewModeAlways;
     email.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:email];
     
@@ -78,6 +81,9 @@
     password.layer.borderColor = [UIColor whiteColor].CGColor;
     password.layer.borderWidth = 1.0f;
     password.layer.cornerRadius = 5;
+    UIView *paddingView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 5, 20)];
+    password.leftView = paddingView1;
+    password.leftViewMode = UITextFieldViewModeAlways;
     password.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:password];
     

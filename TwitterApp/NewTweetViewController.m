@@ -9,6 +9,7 @@
 #import "NewTweetViewController.h"
 #import "Utils.h"
 #import "DatabaseHandler.h"
+#import "MBProgressHUD.h"
 
 @interface NewTweetViewController () <UITextViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 {
@@ -19,7 +20,7 @@
     UILabel *username;
     
     UIView *bottomView;
-    UIButton *addPhoto;
+    //UIButton *addPhoto;
     UITextView *tweet;
     
     NSMutableArray *imagesArray;
@@ -149,6 +150,8 @@
 
 - (void)onPostTweetPressed
 {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
     NSMutableDictionary *tweetInfo = [[NSMutableDictionary alloc] init];
     
     [tweetInfo setValue:tweet.text forKey:@"message"];
@@ -167,6 +170,9 @@
     
     
     [[DatabaseHandler sharedInstance] setCompletionHandler:^(BOOL response) {
+        
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        
         if (!response)
         {
             [[[UIAlertView alloc] initWithTitle:@"Tweet"

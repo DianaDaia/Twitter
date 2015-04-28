@@ -49,6 +49,9 @@
 		A06074611AE2FE4B0032AF56 /* UserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A060745F1AE2FE4B0032AF56 /* UserViewController.m */; };
 		A06074671AE2FEBD0032AF56 /* TweetsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A06074641AE2FEBD0032AF56 /* TweetsCell.m */; };
 		A06074681AE2FEBD0032AF56 /* UserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A06074661AE2FEBD0032AF56 /* UserCell.m */; };
+		A06A7D871AEE435B0098DAA6 /* TweetDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A06A7D861AEE435B0098DAA6 /* TweetDetailsViewController.m */; };
+		A06A7D891AEE8F990098DAA6 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A06A7D881AEE8F990098DAA6 /* MessageUI.framework */; };
+		A06A7D8D1AEEA8EC0098DAA6 /* Item.m in Sources */ = {isa = PBXBuildFile; fileRef = A06A7D8C1AEEA8EC0098DAA6 /* Item.m */; };
 		A0F4BE921AE6F3BD00D6C3B0 /* FriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0F4BE911AE6F3BD00D6C3B0 /* FriendsViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -124,6 +127,11 @@
 		A06074641AE2FEBD0032AF56 /* TweetsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TweetsCell.m; sourceTree = "<group>"; };
 		A06074651AE2FEBD0032AF56 /* UserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserCell.h; sourceTree = "<group>"; };
 		A06074661AE2FEBD0032AF56 /* UserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserCell.m; sourceTree = "<group>"; };
+		A06A7D851AEE435B0098DAA6 /* TweetDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetDetailsViewController.h; sourceTree = "<group>"; };
+		A06A7D861AEE435B0098DAA6 /* TweetDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TweetDetailsViewController.m; sourceTree = "<group>"; };
+		A06A7D881AEE8F990098DAA6 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		A06A7D8B1AEEA8EC0098DAA6 /* Item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Item.h; sourceTree = "<group>"; };
+		A06A7D8C1AEEA8EC0098DAA6 /* Item.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Item.m; sourceTree = "<group>"; };
 		A0F4BE901AE6F3BD00D6C3B0 /* FriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsViewController.h; sourceTree = "<group>"; };
 		A0F4BE911AE6F3BD00D6C3B0 /* FriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -133,6 +141,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A06A7D891AEE8F990098DAA6 /* MessageUI.framework in Frameworks */,
 				A06074351AE2FC9D0032AF56 /* Social.framework in Frameworks */,
 				A06074331AE2FC960032AF56 /* Accounts.framework in Frameworks */,
 				A06074311AE2FC860032AF56 /* libsqlite3.dylib in Frameworks */,
@@ -212,6 +221,8 @@
 				A060745D1AE2FE4B0032AF56 /* FollowViewController.m */,
 				A060745E1AE2FE4B0032AF56 /* UserViewController.h */,
 				A060745F1AE2FE4B0032AF56 /* UserViewController.m */,
+				A06A7D851AEE435B0098DAA6 /* TweetDetailsViewController.h */,
+				A06A7D861AEE435B0098DAA6 /* TweetDetailsViewController.m */,
 				A06073F51AE2FAF90032AF56 /* Main.storyboard */,
 				A06073F81AE2FAF90032AF56 /* Images.xcassets */,
 				A06073FA1AE2FAF90032AF56 /* LaunchScreen.xib */,
@@ -262,6 +273,7 @@
 		A06074361AE2FD120032AF56 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
+				A06A7D881AEE8F990098DAA6 /* MessageUI.framework */,
 				A06074341AE2FC9D0032AF56 /* Social.framework */,
 				A06074321AE2FC960032AF56 /* Accounts.framework */,
 				A06074301AE2FC860032AF56 /* libsqlite3.dylib */,
@@ -287,6 +299,8 @@
 				A060743B1AE2FD9C0032AF56 /* MBProgressHUD.m */,
 				A060743C1AE2FD9C0032AF56 /* Utils.h */,
 				A060743D1AE2FD9C0032AF56 /* Utils.m */,
+				A06A7D8B1AEEA8EC0098DAA6 /* Item.h */,
+				A06A7D8C1AEEA8EC0098DAA6 /* Item.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -424,10 +438,12 @@
 				A06074681AE2FEBD0032AF56 /* UserCell.m in Sources */,
 				A06074601AE2FE4B0032AF56 /* FollowViewController.m in Sources */,
 				A060745A1AE2FE330032AF56 /* NewTweetViewController.m in Sources */,
+				A06A7D871AEE435B0098DAA6 /* TweetDetailsViewController.m in Sources */,
 				A06074401AE2FD9C0032AF56 /* Utils.m in Sources */,
 				A06074611AE2FE4B0032AF56 /* UserViewController.m in Sources */,
 				A06074671AE2FEBD0032AF56 /* TweetsCell.m in Sources */,
 				A0F4BE921AE6F3BD00D6C3B0 /* FriendsViewController.m in Sources */,
+				A06A7D8D1AEEA8EC0098DAA6 /* Item.m in Sources */,
 				A060744E1AE2FDFA0032AF56 /* LoginViewController.m in Sources */,
 				A06074541AE2FE190032AF56 /* EditProfileViewController.m in Sources */,
 				A06073EE1AE2FAF90032AF56 /* main.m in Sources */,

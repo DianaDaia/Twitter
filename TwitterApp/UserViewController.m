@@ -209,17 +209,27 @@
     followersView.translatesAutoresizingMaskIntoConstraints = NO;
     [rightView addSubview:followersView];
     
-    NSDictionary *rightDict = NSDictionaryOfVariableBindings(follow, followersView, followingView);
+    if ([[self.userProfile objectId] isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"id"]])
+    {
+        [follow removeFromSuperview];
+        
+        NSDictionary *rightDict = NSDictionaryOfVariableBindings(followersView, followingView);
+        
+        [rightView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-30-[followingView][followersView(==followingView)]-|" options:0 metrics:nil views:rightDict]];
+        [rightView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[followingView]-|" options:0 metrics:nil views:rightDict]];
+        [rightView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[followersView(==followingView)]-|" options:0 metrics:nil views:rightDict]];
+    }
+    else
+    {
+        NSDictionary *rightDict = NSDictionaryOfVariableBindings(followersView, followingView, follow);
+        
+        [rightView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-30-[follow]-[followingView(==follow)][followersView(==follow)]-|" options:0 metrics:nil views:rightDict]];
+        [rightView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[follow]-|" options:0 metrics:nil views:rightDict]];
+        [rightView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[followingView]-|" options:0 metrics:nil views:rightDict]];
+        [rightView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[followersView(==followingView)]-|" options:0 metrics:nil views:rightDict]];
+    }
     
-    [rightView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-30-[follow]-[followingView(==follow)][followersView(==follow)]-|" options:0 metrics:nil views:rightDict]];
-    [rightView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[follow]-|" options:0 metrics:nil views:rightDict]];
-    [rightView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[followingView]-|" options:0 metrics:nil views:rightDict]];
-    [rightView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[followersView(==followingView)]-|" options:0 metrics:nil views:rightDict]];
     
-//    if ([[self.userProfile objectId] isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"id"]])
-//    {
-//        follow.hidden = true;
-//    }
     
     seeFollowing = [[UIButton alloc] init];
     [seeFollowing setBackgroundColor:[UIColor clearColor]];
